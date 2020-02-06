@@ -1,13 +1,15 @@
-# CLI ElectrumX / Litemode CLI tool
+# CLI [ElectrumX](https://github.com/kyuupichan/electrumx) / Litemode CLI tool
 
 **NOTE: this is work in progress. Use at your own risk, you have been warned!**
 
-This is an attempt to come up with a nice ElectrumX CLI tool written in bash (and a litte bit of NodeJS because there sadly is no `bitcoinbash-lib`). This is **not** using the `RPC` interface but talking ElectrumX protocol to a given server directly. Besides `Master Node` related functionality which i am not planning to implement (feel free to PR tho), these ElectrumX protocol methods are not implemented (yet):
+This is an attempt to come up with a nice [ElectrumX](https://github.com/kyuupichan/electrumx) CLI tool written in bash (and a litte bit of NodeJS because there sadly is no `bitcoinbash-lib`). This is **not** using the `RPC` interface but talking [ElectrumX protocol](https://electrumx.readthedocs.io/en/latest/protocol-methods.html) protocol to a given server directly. Besides `Master Node` related functionality which i am not planning to implement myself, these protocol methods are not implemented (yet):
 
   + `blockchain.transaction.broadcast`
   + `server.add_peer`
 
-  See the [ElectrumX v1.14 docs](https://electrumx.readthedocs.io/en/latest/) for more info and a list of ElectrumX protocol methods and their description.
+  See the [ElectrumX v1.14 docs](https://electrumx.readthedocs.io/en/latest/) for more info and a list of protocol methods  and their description.
+
+  Pull requests are welcome!
 
 ## Prerequisites
 Install these packages:
@@ -29,14 +31,14 @@ $ npm install -g
 
 ### `electrumx`
 
-This is the ElectrumX console client. 
+This is the Electrumx CLI tool. 
 
 #### Basic usage
 ```bash
 $ ./electrumx chain height
 ```
 
-Per default, `electrumx` will try and talk to `tcp://el0.veruscoin.io:17485` (SSL/TLS isn't supported yet). To connect to a different ElectrumX host and/or port, do this: 
+Per default, `electrumx` will try and talk to `tcp://el0.veruscoin.io:17485` (SSL/TLS isn't supported yet). To connect to a different host and/or port, do this: 
 
 ```bash
 $ H=electrum1.cipig.net P=10001 ./electrumx chain subscribe
@@ -56,7 +58,7 @@ $ S=3600 ./electrumx chain subscribe
 
 ### `scripthash`
 
-This utility is written in NodeJS and making use of [`bitcoinjs-lib`](https://github.com/bitcoinjs/bitcoinjs-lib/). It takes a `P2PKH`- or `P2SH`-address as the only argument and turns it into the `scripthash` that ElectrumX expects for various operations such as `blockchain.scripthash.get_balance` or `blockchain.scripthash.listunspent`.
+This utility is written in NodeJS and making use of [`bitcoinjs-lib`](https://github.com/bitcoinjs/bitcoinjs-lib/). It takes a `P2PKH`- or `P2SH`-address as the only argument and turns it into the `scripthash` which ElectrumX expects for various operations such as `blockchain.scripthash.get_balance` or `blockchain.scripthash.listunspent`.
 
 **NOTE:** Currently, this **does not work** for Verus ID addresses as `bitcoinjs-lib` does not know about them.
 
@@ -146,7 +148,7 @@ $ S=3600 ./electrumx chain subscribe
 
 ### `'current chain height'`
 
-**NOTE**: This is not tied to an ElectrumX protocol method but was easy to do using `blockchain.headers.subscribe` and a short subscription time.
+**NOTE**: This is not directly backed by any protocol method but was easy to do using `blockchain.headers.subscribe` and a short subscription time.
 
 *This method has no parameters*
 
@@ -345,7 +347,7 @@ $ ./electrumx mempool get_fh
 
 ```bash
 $ ./electrumx srv banner
-You are connected to an ElectrumX 1.13.0 server.
+You are connected to an ElectrumX 1.14.0 server.
 ```
 
 ### `server.donation_address`
@@ -370,7 +372,7 @@ $ ./electrumx srv features
 {
   "hosts": {},
   "pruning": null,
-  "server_version": "ElectrumX 1.13.0",
+  "server_version": "ElectrumX 1.14.0",
   "protocol_min": "1.4",
   "protocol_max": "1.4.2",
   "genesis_hash": "027e3758c3a65b12aa1046462b486d0a63bfa1beae327897f56c5cfb7daaae71",
@@ -420,5 +422,5 @@ pong!
 
 ```bash
 $ ./electrumx srv version
-ElectrumX 1.13.0
+ElectrumX 1.14.0
 ```
