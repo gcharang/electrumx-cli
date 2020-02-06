@@ -1,10 +1,13 @@
-#!/bin/bash -x
+#!/bin/bash
 
 ##
 ## electrumx bash client
 ##
 
 ELECTRUMX_DEFAULT_HOSTS=("el0.veruscoin.io" "el1.veruscoin.io" "el2.veruscoin.io" "el3.veruscoin.io")
+
+ELECTRUMX_CLIENT_NAME="0x03/electrumx-cli"
+ELECTRUMX_PROTOCOL_VERSION="1.4"
 
 # try to find ncat on the system, exit if not.
 NCAT=$(which ncat)
@@ -216,7 +219,7 @@ function addr_subscribe(){
 # 1: txid
 # 2: verbose flag (hardcoded)
 function tx_get(){
-    _request "blockchain.transaction.get" "${1}" "1" | ${JQ} ${JQ_OPTS} .result
+    _request "blockchain.transaction.get" "\"${1}\"" "1" | ${JQ} ${JQ_OPTS} .result
 }
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#blockchain-transaction-id-from-pos
@@ -224,7 +227,7 @@ function tx_get(){
 # 2: pos
 # 3: get response with merkle root (hardcoded)
 function tx_get_pos(){
-    _request "blockchain.transaction.id_from_pos" "${1}" "${2}" $(printf %.0f 1) | ${JQ} ${JQ_OPTS} .
+    _request "blockchain.transaction.id_from_pos" "${1}" "${2}" $(printf %.0f 1) | ${JQ} ${JQ_OPTS} .result
 }
 
 #
@@ -274,10 +277,10 @@ function srv_ping(){
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#server-version
 function srv_version(){
-    _request "server.version" "0x03" "1.4" | ${JQ} ${JQ_OPTS} .result[0]
+    _request "server.version" "\"${ELECTRUMX_CLIENT_NAME}\"" "\"${ELECTRUMX_PROTOCOL_VERSION}\"" | ${JQ} ${JQ_OPTS} .result[0]
 }
 function srv_protocol(){
-    _request "server.version" "0x03" "1.4" | ${JQ} ${JQ_OPTS} .result[1]
+    _request "server.version" "\"${ELECTRUMX_CLIENT_NAME}\"" "\"${ELECTRUMX_PROTOCOL_VERSION}\"" | ${JQ} ${JQ_OPTS} .result[1]
 }
 
 ${MODULE}_${COMMAND} "${3}" "${4}" "${5}"

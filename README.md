@@ -12,7 +12,7 @@ This is an attempt to come up with a nice ElectrumX CLI tool written in bash (an
 ## Prerequisites
 Install these packages:
 ```
-apt install jq nmap
+$ apt install jq nmap
 ```
 
 Note: `nmap` is needed because of `ncat`. Additionally, a `sleep` binary must be in your path, but that should come with everybodies default install.
@@ -20,9 +20,9 @@ Note: `nmap` is needed because of `ncat`. Additionally, a `sleep` binary must be
 ## Installation
 
 ```
-git clone github.com/BloodyNora/electrumx-cli
-cd electrumx-cli
-npm install -g
+$ git clone github.com/BloodyNora/electrumx-cli
+$ cd electrumx-cli
+$ npm install -g
 ```
 
 ## General usage
@@ -32,8 +32,8 @@ npm install -g
 This is the ElectrumX console client. 
 
 #### Basic usage
-```
-./electrumx chain height
+```bash
+$ ./electrumx chain height
 ```
 
 ### `scripthash`
@@ -42,8 +42,8 @@ This utility is written in NodeJS and making use of [`bitcoinjs-lib`](https://gi
 
 **NOTE:** Currently, this **does not work** for Verus ID addresses as `bitcoinjs-lib` does not know about them.
 
-```
-./scripthash RVD4qyD5oPnAUZaeapRSdExgyEi5wbdCqX
+```bash
+$ ./scripthash RVD4qyD5oPnAUZaeapRSdExgyEi5wbdCqX
 ```
 
 ## ElectrumX Protocol Methods
@@ -55,9 +55,9 @@ This utility is written in NodeJS and making use of [`bitcoinjs-lib`](https://gi
 | 1        | `height`  | Which block height to get the block header for |
 
 #### Example
-```
-./electrumx chain header 800200
-04000100d5db2d209f4ffeaf2e3807e4ecf0899a129f72ab2af2f4e88963000000000000...
+```bash
+$ ./electrumx chain header 800200
+04000100d5db2d209f4ffeaf2e3807e4ecf0899a129f72ab2af2f4e88963...
 ```
 
 ### `blockchain.block.headers`
@@ -69,8 +69,8 @@ This utility is written in NodeJS and making use of [`bitcoinjs-lib`](https://gi
 
 #### Example
 
-```
-./electrumx chain headers 800200 2
+```bash
+$ ./electrumx chain headers 800200 2
 {
   "hex": "04000100d5db2d209f4f...00000004000100d23d40d8bc3...000000",
   "count": 2,
@@ -85,33 +85,29 @@ This utility is written in NodeJS and making use of [`bitcoinjs-lib`](https://gi
 | 1        | `numconfirm`  | Estimation of fee when target number of confirmations should be `numconfirm`. |
 
 #### Example
-```
-./electrumx chain estimatefee
+```bash
+$ ./electrumx chain estimatefee
 -1
 ```
 
 ### `blockchain.relayfee`
 
-| Position | Parameter     | Description                                    |
-|---------:|---------------|------------------------------------------------|
-| *n/a*    | *n/a*         | *This method has no parameters*                |
+*This method has no parameters*
 
 #### Example
-```
-./electrumx chain relayfee
+```bash
+$ ./electrumx chain relayfee
 0.00000100
 ```
 
 ### `blockchain.headers.subscribe`
 
-| Position | Parameter     | Description                                    |
-|---------:|---------------|------------------------------------------------|
-| *n/a*    | *n/a*         | *This method has no parameters*                |
+*This method has no parameters*
 
 #### Example
 
-```
-./electrumx chain subscribe
+```bash
+$ ./electrumx chain subscribe
 {
   "hex": "040001005e611e9febbf6564d473a379bf19...",
   "height": 873532
@@ -126,21 +122,19 @@ This utility is written in NodeJS and making use of [`bitcoinjs-lib`](https://gi
 
 **NOTE:** Per default, the subscription will last for 10min. To change it, prefix the invocation with `S=N` where `N` is the number of seconds: 
 
-```
-S=3600 ./electrumx chain subscribe
+```bash
+$ S=3600 ./electrumx chain subscribe
 ```
 
 ### `'current chain height'`
 
-**NOTE**: This is not a protocol method but was easy to do using `blockchain.headers.subscribe`.
+**NOTE**: This is not tied to an ElectrumX protocol method but was easy to do using `blockchain.headers.subscribe` and a short subscription time.
 
-| Position | Parameter     | Description                                    |
-|---------:|---------------|------------------------------------------------|
-| *n/a*    | *n/a*         | *This method has no parameters*                |
+*This method has no parameters*
 
 #### Example
-```
-./electrumx chain height
+```bash
+$ ./electrumx chain height
 873582
 ```
 
@@ -152,8 +146,8 @@ S=3600 ./electrumx chain subscribe
 
 #### Example
 
-```
-./electrumx addr balance RBBxnQZyPhAwcejNK25wdQEpp6JgTkfbww
+```bash
+$ ./electrumx addr balance RBBxnQZyPhAwcejNK25wdQEpp6JgTkfbww
 5116.03321921
 ```
 
@@ -165,8 +159,8 @@ S=3600 ./electrumx chain subscribe
 
 #### Example
 
-```
-./electrumx addr history bCm5tsaA5PagFf6kGTL9KowaGds2qcH28i
+```bash
+$ ./electrumx addr history bCm5tsaA5PagFf6kGTL9KowaGds2qcH28i
 [
   {
     "tx_hash": "ff1ec4aff6c58cb2e9ad6a212057b8c81ef20bfecf7b42fd71a7419e4bfcc3d0",
@@ -199,8 +193,8 @@ S=3600 ./electrumx chain subscribe
 
 #### Example
 
-```
-./electrumx addr unspent bCm5tsaA5PagFf6kGTL9KowaGds2qcH28i
+```bash
+$ ./electrumx addr unspent bCm5tsaA5PagFf6kGTL9KowaGds2qcH28i
 [
   {
     "tx_hash": "279387fee138b648a7a80687cbbe17b27a035a704b7985231c4a0fd22315ad92",
@@ -213,20 +207,200 @@ S=3600 ./electrumx chain subscribe
 
 ### `blockchain.scripthash.subscribe`
 
+| Position | Parameter     | Description                                    |
+|---------:|---------------|------------------------------------------------|
+| 1        | `address`     | `P2PKH` or `P2SH` address to get balance for   |
+
+#### Example
+
+```bash
+$ ./electrumx addr subscribe bCm5tsaA5PagFf6kGTL9KowaGds2qcH28i
+82444c5f8b2b55ef6e02e95f1a2bd259a0e32a5281402fbf2a952f3ea9c292e2
+```
+
+**NOTE**: The result is a `scripthash status`. For more info click [here](https://electrumx.readthedocs.io/en/latest/protocol-basics.html#status).
+
 ### `blockchain.transaction.get`
+
+| Position | Parameter     | Description                                    |
+|---------:|---------------|------------------------------------------------|
+| 1        | `txid`        | ID of transaction to display                   |
+
+#### Example
+
+```bash
+$ ./electrumx tx get 9c48270d8071b65a9109ef2ace74266f712ab3a98fb593c15ef51cf491eba3dc
+{
+  "hex": "0400008085202f89010000000000000000000000000000000000000000000000000000000000000000ffffffff050389540d00ffffffff0100180d8f000000001976a91414f312dbdeaba05d5b76ecd9a306b72020deee6288ac00000000000000000000000000000000000000",
+  "txid": "9c48270d8071b65a9109ef2ace74266f712ab3a98fb593c15ef51cf491eba3dc",
+  "overwintered": true,
+  "version": 4,
+  "versiongroupid": "892f2085",
+  "locktime": 0,
+  "expiryheight": 0,
+  "vin": [
+    {
+      "coinbase": "0389540d00",
+      "sequence": 4294967295
+    }
+  ],
+  "vout": [
+    {
+      "value": 24,
+      "valueSat": 2400000000,
+      "n": 0,
+      "scriptPubKey": {
+        "type": "pubkeyhash",
+        "reqSigs": 1,
+        "addresses": [
+          "RBBxnQZyPhAwcejNK25wdQEpp6JgTkfbww"
+        ],
+        "asm": "OP_DUP OP_HASH160 14f312dbdeaba05d5b76ecd9a306b72020deee62 OP_EQUALVERIFY OP_CHECKSIG",
+        "hex": "76a91414f312dbdeaba05d5b76ecd9a306b72020deee6288ac"
+      }
+    }
+  ],
+  "vjoinsplit": [],
+  "valueBalance": 0,
+  "vShieldedSpend": [],
+  "vShieldedOutput": [],
+  "blockhash": "000000000046587d850582a5e56e264ccc9a69269da850f40ab598e5e050a35a",
+  "height": 873609,
+  "confirmations": 1,
+  "time": 1580988668,
+  "blocktime": 1580988668
+}
+```
 
 ### `blockchain.transaction.id_from_pos`
 
+| Position | Parameter     | Description                                    |
+|---------:|---------------|------------------------------------------------|
+| 1        | `height`      | Block height to search for tx in               |
+| 2        | `position`    | Position of tx in block, starting from zero    |
+
+#### Example
+
+```bash
+$ ./electrumx tx get_index 800200 1
+{
+  "tx_hash": "3993b129d3054b3dd334615d14907e559fb94b9d4d6fe3be8dd8315538a21316",
+  "merkle": [
+    "7194e209aa8518384239eacdb37f08fd3bf381148a1935a15b51c8490a93d7e7"
+  ]
+}
+```
+
 ### `mempool.get_fee_histogram`
+
+*This method has no parameters*
+
+#### Example
+
+```bash
+$ ./electrumx mempool get_fh
+[
+  [
+    12,
+    128812
+  ],
+  [
+    4,
+    92524
+  ],
+  [
+    2,
+    6478638
+  ],
+  [
+    1,
+    22890421
+  ]
+]
+```
 
 ### `server.banner`
 
+*This method has no parameters*
+
+#### Example
+
+```bash
+$ ./electrumx srv banner
+You are connected to an ElectrumX 1.13.0 server.
+```
+
 ### `server.donation_address`
+
+*This method has no parameters*
+
+#### Example
+
+```bash
+$ ./electrumx srv donations
+RGKb9BGcWbjS2Mee1DaGXbub4u4zEUgkUQ
+```
 
 ### `server.features`
 
+*This method has no parameters*
+
+#### Example
+
+```bash
+$ ./electrumx srv features
+{
+  "hosts": {},
+  "pruning": null,
+  "server_version": "ElectrumX 1.13.0",
+  "protocol_min": "1.4",
+  "protocol_max": "1.4.2",
+  "genesis_hash": "027e3758c3a65b12aa1046462b486d0a63bfa1beae327897f56c5cfb7daaae71",
+  "hash_function": "sha256",
+  "services": []
+}
+```
+
+**NOTE:** See [this document](https://electrumx.readthedocs.io/en/latest/protocol-methods.html#server-features) for a description of the features.
+
 ### `server.peers.subscribe`
+
+*This method has no parameters*
+
+#### Example
+
+```bash
+$ ./electrumx srv peers
+[
+  "107.150.45.210",
+  "e.anonyhost.org",
+  [
+    "v1.0",
+    "p10000",
+    "t",
+    "s995"
+  ]
+]
+```
 
 ### `server.ping`
 
+*This method has no parameters*
+
+#### Example
+
+```bash
+$ ./electrumx srv ping
+pong!
+```
+
 ### `server.version`
+
+*This method has no parameters*
+
+#### Example
+
+```bash
+$ ./electrumx srv version
+ElectrumX 1.13.0
+```
