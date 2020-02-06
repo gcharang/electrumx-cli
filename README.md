@@ -102,12 +102,12 @@ $ ./electrumx chain headers 800200 2
 
 | Position | Parameter     | Description                                    |
 |---------:|---------------|------------------------------------------------|
-| 1        | `numconfirm`  | Estimation of fee when target number of confirmations should be `numconfirm`. |
+| 1        | `numconfirm`  | Estimation of fee when the minimum number of confirmations for a transaction should be `numconfirm`. |
 
 #### Example
 ```bash
 $ ./electrumx chain estimatefee
--1
+0.00011079
 ```
 
 ### `blockchain.relayfee`
@@ -138,12 +138,6 @@ $ ./electrumx chain subscribe
     "height": 873537
   }
 ]
-```
-
-**NOTE:** Per default, the subscription will last for 10min. To change it, prefix the invocation with `S=N` where `N` is the number of seconds: 
-
-```bash
-$ S=3600 ./electrumx chain subscribe
 ```
 
 ### `'current chain height'`
