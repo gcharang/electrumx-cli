@@ -20,8 +20,8 @@ Note: `nmap` is needed because of `ncat`. Additionally, a `sleep` binary must be
 ## Installation
 
 ```
-git clone github.com/BloodyNora/electrumx_client
-cd electrumx_client
+git clone github.com/BloodyNora/electrumx-cli
+cd electrumx-cli
 npm install -g
 ```
 
