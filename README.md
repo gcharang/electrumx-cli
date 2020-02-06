@@ -108,7 +108,7 @@ $ ./electrumx chain headers 800200 2
 
 #### Example
 ```bash
-$ ./electrumx chain estimatefee
+$ ./electrumx chain estimatefee 15
 0.00011079
 ```
 
