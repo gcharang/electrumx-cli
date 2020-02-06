@@ -36,6 +36,24 @@ This is the ElectrumX console client.
 $ ./electrumx chain height
 ```
 
+Per default, `electrumx` will try and talk to `tcp://el0.veruscoin.io:17485` (SSL/TLS isn't supported yet). To connect to a different ElectrumX host and/or port, do this: 
+
+```bash
+$ H=electrum1.cipig.net P=10001 ./electrumx chain subscribe
+```
+
+Per default, all but the `subscribe` commands (-> all simple requests) will wait for 0.5s before returning. The `subscribe` commands will timeout after 600s. To change either one at runtime, set `S` to a higher value like this: 
+
+```bash
+$ S=1.5 ./electrumx srv features
+```
+
+*or*
+
+```bash
+$ S=3600 ./electrumx chain subscribe
+```
+
 ### `scripthash`
 
 This utility is written in NodeJS and making use of [`bitcoinjs-lib`](https://github.com/bitcoinjs/bitcoinjs-lib/). It takes a `P2PKH`- or `P2SH`-address as the only argument and turns it into the `scripthash` that ElectrumX expects for various operations such as `blockchain.scripthash.get_balance` or `blockchain.scripthash.listunspent`.
