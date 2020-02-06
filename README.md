@@ -19,7 +19,7 @@ How exactly to install NodeJS largely depends upon your distribution, your prefe
 $ apt install jq nmap
 ```
 
-**NOTE**: `nmap` is needed because of `ncat`. Additionally, a `sleep` binary must be in your path, but that should come with everybodies default install. 
+**NOTE**: `nmap` is needed because of `ncat`. Additionally, a `sleep` binary must be in your `$PATH`, but that should come with everybodies default install. 
 
 ## Installation
 
