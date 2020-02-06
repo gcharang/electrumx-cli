@@ -58,7 +58,7 @@ $ S=3600 ./electrumx chain subscribe
 
 ### `scripthash`
 
-This utility is written in NodeJS and making use of [`bitcoinjs-lib`](https://github.com/bitcoinjs/bitcoinjs-lib/). It takes a `P2PKH`- or `P2SH`-address as the only argument and turns it into the `scripthash` which ElectrumX expects for various operations such as `blockchain.scripthash.get_balance` or `blockchain.scripthash.listunspent`.
+This utility is written in NodeJS and making use of [`bitcoinjs-lib`](https://github.com/bitcoinjs/bitcoinjs-lib/). It takes a `P2PKH` or `P2SH` address as the only argument and turns it into the `scripthash` which ElectrumX expects for various operations such as `blockchain.scripthash.get_balance` or `blockchain.scripthash.listunspent`.
 
 **NOTE:** Currently, this **does not work** for Verus ID addresses as `bitcoinjs-lib` does not know about them.
 
