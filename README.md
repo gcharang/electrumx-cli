@@ -12,12 +12,14 @@ This is an attempt to come up with a nice [ElectrumX](https://github.com/kyuupic
   Pull requests are welcome!
 
 ## Prerequisites
-Install these packages:
+
+How exactly to install NodeJS largely depends upon your distribution, your preferences and probably even the weather in Soviet Russia, this is outside of the scope of this guide. Besides, install these packages:
+
 ```
 $ apt install jq nmap
 ```
 
-Note: `nmap` is needed because of `ncat`. Additionally, a `sleep` binary must be in your path, but that should come with everybodies default install.
+**NOTE**: `nmap` is needed because of `ncat`. Additionally, a `sleep` binary must be in your path, but that should come with everybodies default install. 
 
 ## Installation
 
@@ -60,7 +62,7 @@ $ S=3600 ./electrumx chain subscribe
 
 This utility is written in NodeJS and making use of [`bitcoinjs-lib`](https://github.com/bitcoinjs/bitcoinjs-lib/). It takes a `P2PKH` or `P2SH` address as the only argument and turns it into the `scripthash` which ElectrumX expects for various operations such as `blockchain.scripthash.get_balance` or `blockchain.scripthash.listunspent`.
 
-**NOTE:** Currently, this **does not work** for Verus ID addresses as `bitcoinjs-lib` does not know about them.
+**NOTE**: Currently, this **does not work** for Verus ID addresses as `bitcoinjs-lib` does not know about them.
 
 ```bash
 $ ./scripthash RVD4qyD5oPnAUZaeapRSdExgyEi5wbdCqX
@@ -375,7 +377,7 @@ $ ./electrumx srv features
 }
 ```
 
-**NOTE:** See [this document](https://electrumx.readthedocs.io/en/latest/protocol-methods.html#server-features) for a description of the features.
+**NOTE**: See [this document](https://electrumx.readthedocs.io/en/latest/protocol-methods.html#server-features) for a description of the features.
 
 ### `server.peers.subscribe`
 
