@@ -1,4 +1,4 @@
-# CLI [ElectrumX](https://github.com/kyuupichan/electrumx) / Litemode CLI tool
+# CLI ElectrumX / Litemode CLI tool
 
 **NOTE: this is work in progress. Use at your own risk, you have been warned!**
 
