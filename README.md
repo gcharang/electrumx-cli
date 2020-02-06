@@ -2,7 +2,7 @@
 
 **NOTE: this is work in progress. Use at your own risk, you have been warned!**
 
-This is an attempt to come up with a nice [ElectrumX](https://github.com/kyuupichan/electrumx) CLI tool written in bash (and a litte bit of NodeJS because there sadly is no `bitcoinbash-lib`). This is **not** using the `RPC` interface but talking [ElectrumX protocol](https://electrumx.readthedocs.io/en/latest/protocol-methods.html) protocol to a given server directly. Besides `Master Node` related functionality which i am not planning to implement myself, these protocol methods are not implemented (yet):
+This is an attempt to come up with a nice [ElectrumX](https://github.com/kyuupichan/electrumx) CLI tool written in bash (and a litte bit of NodeJS because there sadly is no `bitcoinbash-lib`). This is **not** using the `RPC` interface but talking [ElectrumX protocol](https://electrumx.readthedocs.io/en/latest/protocol-methods.html) to a given server directly. Besides `Master Node` related functionality which i am not planning to implement myself, these protocol methods are not implemented (yet):
 
   + `blockchain.transaction.broadcast`
   + `server.add_peer`
