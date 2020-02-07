@@ -16,10 +16,10 @@ This is an attempt to come up with a nice [ElectrumX](https://github.com/kyuupic
 How exactly to install NodeJS largely depends upon your distribution, your preferences and probably even the weather in Soviet Russia, this is outside of the scope of this guide. Besides, install these packages:
 
 ```
-$ apt install jq nmap
+$ apt install jq nmap bc
 ```
 
-**NOTE**: `nmap` is needed because of `ncat`. Additionally, a `sleep` binary must be in your `$PATH`, but that should come with everybodies default install. 
+**NOTE**: `nmap` is needed because of `ncat`. `bc` is needed because we need to do some precise maths. Additionally, a `sleep` binary must be in your `$PATH`, but that should come with everybodies default install. 
 
 ## Installation
 
@@ -58,6 +58,8 @@ $ S=1.5 ./electrumx srv features
 ```bash
 $ S=3600 ./electrumx chain subscribe
 ```
+
+**NOTE**: This depends on your `sleep` binary. Newer ones seem to support fractions of seconds as well.
 
 ### `scripthash`
 
@@ -201,6 +203,17 @@ $ ./electrumx addr history bCm5tsaA5PagFf6kGTL9KowaGds2qcH28i
 | 1        | `address`     | `P2PKH` or `P2SH` address to get balance for   |
 
 #### Example
+
+```bash
+./electrumx addr mempool bCm5tsaA5PagFf6kGTL9KowaGds2qcH28i
+[
+  {
+    "tx_hash": "279387fee138b648a7a80687cbbe17b27a035a704b7985231c4a0fd22315ad92",
+    "height": 0,
+    "fee": 0
+  }
+]
+```
 
 ### `blockchain.scripthash.listunspent`
 
