@@ -12,8 +12,8 @@ ELECTRUMX_PROTOCOL_VERSION="1.4"
 # try to find ncat on the system, exit if not.
 NCAT=$(which ncat)
 if [ -z "${NCAT}" ]; then
-    echo "\"${NCAT}\" not found or not in \$PATH"
-    echo "try: sudo apt search ${NCAT}"
+    echo "\"ncat\" not found or not in \$PATH"
+    echo "try: sudo apt install nmap"
     exit
 fi
 
@@ -29,7 +29,7 @@ JQ_OPTS="-Mr"
 # try to find sleep on the system, exit if not.
 SLEEP=$(which sleep)
 if [ -z "${SLEEP}" ]; then
-    echo "\"${SLEEP}\" not found or not in \$PATH"
+    echo "\"sleep\" not found or not in \$PATH"
     echo "try: find . -type 'f' -name '${SLEEP}'"
     exit
 fi
@@ -283,5 +283,7 @@ function srv_protocol(){
     _request "server.version" "\"${ELECTRUMX_CLIENT_NAME}\"" "\"${ELECTRUMX_PROTOCOL_VERSION}\"" | ${JQ} ${JQ_OPTS} .result[1]
 }
 
+# execute
 ${MODULE}_${COMMAND} "${3}" "${4}" "${5}"
+
 # EOF
