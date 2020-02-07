@@ -7,7 +7,7 @@ _electrumx()
 
     case ${COMP_CWORD} in
         1)
-            COMPREPLY=($(compgen -W "configure show" -- ${cur}))
+            COMPREPLY=($(compgen -W "chain addr tx mempool srv" -- ${cur}))
             ;;
         2)
             case ${prev} in
