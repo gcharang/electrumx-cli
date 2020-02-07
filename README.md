@@ -312,7 +312,7 @@ $ ./electrumx tx get 9c48270d8071b65a9109ef2ace74266f712ab3a98fb593c15ef51cf491e
 #### Example
 
 ```bash
-$ ./electrumx tx get_index 800200 1
+$ ./electrumx tx get_pos 800200 1
 {
   "tx_hash": "3993b129d3054b3dd334615d14907e559fb94b9d4d6fe3be8dd8315538a21316",
   "merkle": [
