@@ -9,7 +9,7 @@ var bitcoin = require('bitcoinjs-lib'),
 address = process.argv.slice(2)[0].toString(),
 scriptPubKey;
 
-let decode  = bitcoin.address.fromBase58Check(address);
+let decode = bitcoin.address.fromBase58Check(address);
 
 // P2PKH
 if (decode.version === 60)
