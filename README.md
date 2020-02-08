@@ -27,7 +27,7 @@ $ apt install jq nmap bc
 $ git clone github.com/BloodyNora/electrumx-cli
 $ cd electrumx-cli
 $ npm install -g bitcoinjs-lib
-$ sudo cp electrumx-completion.bash /etc/bash_completion.d/electrumx-cli
+$ sudo cp electrumx-completion.bash /etc/bash_completion.d/
 ```
 
 ## General usage
