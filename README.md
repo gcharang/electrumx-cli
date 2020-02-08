@@ -13,7 +13,7 @@ This is an attempt to come up with a nice [ElectrumX](https://github.com/kyuupic
 
 ## Prerequisites
 
-How exactly to install NodeJS largely depends upon your distribution, your preferences and probably even the weather in Soviet Russia, this is outside of the scope of this guide. Besides, install these packages:
+How exactly to install NodeJS largely depends upon your preferences and probably even the weather in Soviet Russia, thus this is outside of the scope of this guide. Besides, install these packages:
 
 ```
 $ apt install jq nmap bc
@@ -53,10 +53,10 @@ You can have `electrumx` echo the server it uses to `STDERR` if you set `${D}` t
 $ D=1 ./electrumx srv ping
 ```
 
-Per default, all but the `subscribe` commands (-> all simple requests) will wait for 0.5s before returning. The `subscribe` commands will timeout after 600s. To change either one at runtime, set `S` to a higher value like this: 
+Per default, all but the `subscribe` commands (-> all simple requests) will wait for 0.5s before returning. The `subscribe` commands will timeout after 600s. To change either one at runtime, set `T` to a higher value like this: 
 
 ```bash
-$ S=1.5 ./electrumx srv features
+$ T=1.5 ./electrumx srv features
 ```
 
 *or*
@@ -64,8 +64,6 @@ $ S=1.5 ./electrumx srv features
 ```bash
 $ S=3600 ./electrumx chain subscribe
 ```
-
-**NOTE**: This depends on your `sleep` binary. Newer ones seem to support fractions of seconds as well.
 
 ### `scripthash`
 
