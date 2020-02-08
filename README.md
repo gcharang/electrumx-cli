@@ -47,6 +47,12 @@ Per default, `electrumx` will try and talk to `tcp://el0.veruscoin.io:17485` (SS
 $ H=electrum1.cipig.net P=10001 ./electrumx chain subscribe
 ```
 
+You can have `electrumx` echo the server it uses to `STDERR` if you set `${D}` to a non-empty value (currently any value will work): 
+
+```bash
+$ D=1 ./electrumx srv ping
+```
+
 Per default, all but the `subscribe` commands (-> all simple requests) will wait for 0.5s before returning. The `subscribe` commands will timeout after 600s. To change either one at runtime, set `S` to a higher value like this: 
 
 ```bash

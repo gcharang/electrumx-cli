@@ -295,7 +295,7 @@ function srv_protocol(){
 
 # execute
 if [ ! -z "${D}" ]; then
-    echo "tcp://${ELECTRUMX_HOST}:${ELECTRUMX_PORT}"
+    >&2 echo "tcp://${ELECTRUMX_HOST}:${ELECTRUMX_PORT}"
 fi
 ${MODULE}_${COMMAND} "${3}" "${4}" "${5}"
 
