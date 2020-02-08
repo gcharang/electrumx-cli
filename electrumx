@@ -5,6 +5,7 @@
 ##
 
 ELECTRUMX_DEFAULT_HOSTS=("el0.veruscoin.io" "el1.veruscoin.io" "el2.veruscoin.io")
+ELECTRUMX_DEFAULT_PORT="17485"
 
 ELECTRUMX_CLIENT_NAME="0x03/electrumx-cli"
 ELECTRUMX_PROTOCOL_VERSION="1.4"
@@ -57,7 +58,7 @@ fi
 case ${P} in
     # empty or non-numeric, use default
     ''|*[!0-9]*)
-        ELECTRUMX_PORT="17485"
+        ELECTRUMX_PORT="${ELECTRUMX_DEFAULT_PORT}"
     ;;
     *)
         # numeric, use passed value
@@ -293,6 +294,9 @@ function srv_protocol(){
 }
 
 # execute
+if [ ! -z "${D}" ]; then
+    echo "tcp://${ELECTRUMX_HOST}:${ELECTRUMX_PORT}"
+fi
 ${MODULE}_${COMMAND} "${3}" "${4}" "${5}"
 
 # EOF
