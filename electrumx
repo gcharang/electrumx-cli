@@ -10,6 +10,14 @@ ELECTRUMX_DEFAULT_PORT="17485"
 ELECTRUMX_CLIENT_NAME="0x03/electrumx-cli"
 ELECTRUMX_PROTOCOL_VERSION="1.4"
 
+# default timeouts
+SUBSCRIBE_TIMEOUT=600
+REQUEST_TIMEOUT=0.5
+
+# if there's a ${T} variable set, use that as timeout.
+test ! -z "${T}" && SUBSCRIBE_TIMEOUT="${T}"
+test ! -z "${T}" && REQUEST_TIMEOUT="${T}"
+
 # try to find ncat on the system, exit if not.
 NCAT=$(which ncat)
 if [ -z "${NCAT}" ]; then
@@ -72,26 +80,23 @@ MODULE="${1}"
 COMMAND="${2}"
 
 #
-# electrumx helpers
-#
-
 # request data from electrumx
+# ${1}: operation read timeout
+# ${2}: method to execute 
+# ${3}..${N}: additional parameters
+#
 function _request(){
-    # if there is a sleep duration specified via environment variable S and it's numeric, use it
-    if [ ! -z "${S}" ]; then
-        SLEEP_DURATION="${S}"
-    else
-        SLEEP_DURATION=0.5
-    fi
+    local TIMEOUT="${1}"
+    shift 1
     # save the first param which in the beginning is the method to execute
-    METHOD="${1}"
+    local METHOD="${1}"
     # remove it from the argument list
     shift 1
 
     # if there are still arguments left, 
     if [ $# -ge 1 ]; then 
         # start constructing 'params'
-        PARAMS=",\"params\":["
+       local  PARAMS=",\"params\":["
         # while there are still arguments left
         while [ $# -ge 1 ]; do
             # add argument to 'params'
@@ -103,39 +108,13 @@ function _request(){
         # the last character from PARAMS and then close the array with a ]
         PARAMS="${PARAMS::-1}]"
     fi
+
+    # output debug info to STDERR if ${D} is set
+    test ! -z "${D}" && >&2 echo "DEBUG: ${TIMEOUT} ${METHOD} ${PARAMS:1}"
+
     # request whatever has been prepared, with or without params.
-    (echo "{\"id\": 1, \"method\": \"${METHOD}\"${PARAMS}}"; ${SLEEP} ${SLEEP_DURATION}) | ${NCAT} ${ELECTRUMX_HOST} ${ELECTRUMX_PORT}
+    (echo "{\"id\": 1, \"method\": \"${METHOD}\"${PARAMS}}"; ${SLEEP} ${TIMEOUT}) | ${NCAT} ${ELECTRUMX_HOST} ${ELECTRUMX_PORT}
 }
-
-# subscribe to data stream
-function _subscribe(){
-    if [ ! -z "${S}" ]; then
-        SLEEP_DURATION="${S}"
-    else
-        SLEEP_DURATION=600
-    fi
-    # do the same thing again, now the first argument is the electrumx protocol method
-    METHOD="${1}"
-    shift
-
-    # now, if any, we have only method arguments left. if so,
-    if [ $# -ge 1 ]; then 
-        # start constructing 'params'
-        PARAMS=",\"params\":["
-        # while there are still arguments left
-        while [ $# -ge 1 ]; do
-            # add argument to 'params'
-            PARAMS="${PARAMS}${1},"
-            # remove argument from argument list
-            shift
-        done
-        # since a PARAM will end in a , and that is bad for json, we'll remove the last character from PARAMS.
-        PARAMS="${PARAMS::-1}]"
-    fi
-
-    # subscribe to whatever has been prepared, for the given length, with or without params.
-    (echo "{\"id\": 1, \"method\": \"${METHOD}\"${PARAMS}}"; ${SLEEP} ${SLEEP_DURATION}) | ${NCAT} ${ELECTRUMX_HOST} ${ELECTRUMX_PORT}
-  }
 
 #
 # blockchain: chain_
@@ -144,37 +123,37 @@ function _subscribe(){
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#blockchain-block-header
 # ${1}: height
 function chain_header(){
-    _request "blockchain.block.header" "${1}" | ${JQ} ${JQ_OPTS} .result
+    _request "${REQUEST_TIMEOUT}" "blockchain.block.header" "${1}" | ${JQ} ${JQ_OPTS} .result
 }
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#blockchain-block-headers
 # ${1}: height
 # ${2}: number
 function chain_headers(){
-    _request "blockchain.block.headers" "${1}" "${2}" | ${JQ} ${JQ_OPTS} .result
+    _request "${REQUEST_TIMEOUT}" "blockchain.block.headers" "${1}" "${2}" | ${JQ} ${JQ_OPTS} .result
 
 }
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#blockchain-estimatefee
 # ${1}: target confirmations
 function chain_estimatefee(){
-    _request "blockchain.estimatefee" "${1}" | ${JQ} ${JQ_OPTS} .result
+    _request "${REQUEST_TIMEOUT}" "blockchain.estimatefee" "${1}" | ${JQ} ${JQ_OPTS} .result
 }
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#blockchain-relayfee
 function chain_relayfee(){
-    printf "%.8f\n" $(_request "blockchain.relayfee" | ${JQ} ${JQ_OPTS} .result)
+    printf "%.8f\n" $(_request "${REQUEST_TIMEOUT}" "blockchain.relayfee" | ${JQ} ${JQ_OPTS} .result)
 }
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#blockchain-headers-subscribe
 # ${1}: duration in seconds, default 60
 function chain_subscribe(){
-    _subscribe "blockchain.headers.subscribe" | ${JQ} ${JQ_OPTS} ".result // .params"
+    _request "${SUBSCRIBE_TIMEOUT}" "blockchain.headers.subscribe" | ${JQ} ${JQ_OPTS} ".result // .params"
 }
 
 # this just is 'blockchain.headers.subscribe' with a really short duration and a jq filter
 function chain_height(){
-    _request "blockchain.headers.subscribe" | ${JQ} ${JQ_OPTS} .result.height
+    _request "${REQUEST_TIMEOUT}" "blockchain.headers.subscribe" | ${JQ} ${JQ_OPTS} .result.height
 }
 
 #
@@ -185,7 +164,7 @@ function chain_height(){
 # ${1}: address
 function addr_balance(){
 	SCRIPTHASH=$(./scripthash ${1})
-    RESULT=$(_request "blockchain.scripthash.get_balance" "\"${SCRIPTHASH}\"" | ${JQ} ${JQ_OPTS} .result.confirmed)
+    RESULT=$(_request "${REQUEST_TIMEOUT}" "blockchain.scripthash.get_balance" "\"${SCRIPTHASH}\"" | ${JQ} ${JQ_OPTS} .result.confirmed)
     echo "scale=8; ${RESULT}/100000000" | ${BC}
 }
 
@@ -193,21 +172,21 @@ function addr_balance(){
 # ${1}: address
 function addr_history(){
 	SCRIPTHASH=$(./scripthash ${1})
-    _request "blockchain.scripthash.get_history" "\"${SCRIPTHASH}\"" | ${JQ} ${JQ_OPTS} .result
+    _request "${REQUEST_TIMEOUT}" "blockchain.scripthash.get_history" "\"${SCRIPTHASH}\"" | ${JQ} ${JQ_OPTS} .result
 }
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#blockchain-scripthash-get-mempool
 # ${1}: address
 function addr_mempool(){
 	SCRIPTHASH=$(./scripthash ${1})
-    _request "blockchain.scripthash.get_mempool" "\"${SCRIPTHASH}\"" | ${JQ} ${JQ_OPTS} .result
+    _request "${REQUEST_TIMEOUT}" "blockchain.scripthash.get_mempool" "\"${SCRIPTHASH}\"" | ${JQ} ${JQ_OPTS} .result
 }
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#blockchain-scripthash-listunspent
 # ${1}: address
 function addr_unspent(){
 	SCRIPTHASH=$(./scripthash ${1})
-    _request "blockchain.scripthash.listunspent" "\"${SCRIPTHASH}\"" | ${JQ} ${JQ_OPTS} .result
+    _request "${REQUEST_TIMEOUT}" "blockchain.scripthash.listunspent" "\"${SCRIPTHASH}\"" | ${JQ} ${JQ_OPTS} .result
 }
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#blockchain-scripthash-subscribe
@@ -215,7 +194,7 @@ function addr_unspent(){
 # ${2}: address
 function addr_subscribe(){
     SCRIPTHASH=$(./scripthash ${1})
-    _subscribe "blockchain.scripthash.subscribe" "\"${SCRIPTHASH}\"" | ${JQ} ${JQ_OPTS} '.result // .params[1]// .error'
+    _request "${SUBSCRIBE_TIMEOUT}" "blockchain.scripthash.subscribe" "\"${SCRIPTHASH}\"" | ${JQ} ${JQ_OPTS} '.result // .params[1]// .error'
 }
 
 #
@@ -229,7 +208,7 @@ function addr_subscribe(){
 # 1: txid
 # 2: verbose flag (hardcoded)
 function tx_get(){
-    _request "blockchain.transaction.get" "\"${1}\"" "1" | ${JQ} ${JQ_OPTS} .result
+    _request "${REQUEST_TIMEOUT}" "blockchain.transaction.get" "\"${1}\"" "1" | ${JQ} ${JQ_OPTS} .result
 }
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#blockchain-transaction-id-from-pos
@@ -237,7 +216,7 @@ function tx_get(){
 # 2: pos
 # 3: get response with merkle root (hardcoded)
 function tx_get_pos(){
-    _request "blockchain.transaction.id_from_pos" "${1}" "${2}" $(printf %.0f 1) | ${JQ} ${JQ_OPTS} .result
+    _request "${REQUEST_TIMEOUT}" "blockchain.transaction.id_from_pos" "${1}" "${2}" $(printf %.0f 1) | ${JQ} ${JQ_OPTS} .result
 }
 
 #
@@ -246,7 +225,7 @@ function tx_get_pos(){
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#mempool-get-fee-histogram
 function mempool_get_fh(){
-    _request "mempool.get_fee_histogram" | ${JQ} ${JQ_OPTS} .result
+    _request "${REQUEST_TIMEOUT}" "mempool.get_fee_histogram" | ${JQ} ${JQ_OPTS} .result
 }
 
 #
@@ -259,27 +238,27 @@ function mempool_get_fh(){
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#server-banner
 function srv_banner(){
-    _request "server.banner" | ${JQ} ${JQ_OPTS} .result
+    _request "${REQUEST_TIMEOUT}" "server.banner" | ${JQ} ${JQ_OPTS} .result
 }
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#server-donation-address
 function srv_donations(){
-    _request "server.donation_address" | ${JQ} ${JQ_OPTS} .result
+    _request "${REQUEST_TIMEOUT}" "server.donation_address" | ${JQ} ${JQ_OPTS} .result
 }
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#server-features
 function srv_features(){
-    _request "server.features" | ${JQ} ${JQ_OPTS} .result
+    _request "${REQUEST_TIMEOUT}" "server.features" | ${JQ} ${JQ_OPTS} .result
 }
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#server.peers.subscribe
 function srv_peers(){
-    _request "server.peers.subscribe" | ${JQ} ${JQ_OPTS} .result
+    _request "${REQUEST_TIMEOUT}" "server.peers.subscribe" | ${JQ} ${JQ_OPTS} .result
 }
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#server-ping
 function srv_ping(){
-    REPLY=$(_request "server.ping" | ${JQ} ${JQ_OPTS} .result)
+    REPLY=$(_request "${REQUEST_TIMEOUT}" "server.ping" | ${JQ} ${JQ_OPTS} .result)
     if [ "${REPLY}" == "null" ]; then
         echo pong!
     fi
@@ -287,16 +266,14 @@ function srv_ping(){
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#server-version
 function srv_version(){
-    _request "server.version" "\"${ELECTRUMX_CLIENT_NAME}\"" "\"${ELECTRUMX_PROTOCOL_VERSION}\"" | ${JQ} ${JQ_OPTS} .result[0]
+    _request "${REQUEST_TIMEOUT}" "server.version" "\"${ELECTRUMX_CLIENT_NAME}\"" "\"${ELECTRUMX_PROTOCOL_VERSION}\"" | ${JQ} ${JQ_OPTS} .result[0]
 }
 function srv_protocol(){
-    _request "server.version" "\"${ELECTRUMX_CLIENT_NAME}\"" "\"${ELECTRUMX_PROTOCOL_VERSION}\"" | ${JQ} ${JQ_OPTS} .result[1]
+    _request "${REQUEST_TIMEOUT}" "server.version" "\"${ELECTRUMX_CLIENT_NAME}\"" "\"${ELECTRUMX_PROTOCOL_VERSION}\"" | ${JQ} ${JQ_OPTS} .result[1]
 }
 
-# execute
-if [ ! -z "${D}" ]; then
-    >&2 echo "tcp://${ELECTRUMX_HOST}:${ELECTRUMX_PORT}"
-fi
+# output debug info if requested. execute.
+test ! -z "${D}" && >&2 echo "DEBUG: using tcp://${ELECTRUMX_HOST}:${ELECTRUMX_PORT}"
 ${MODULE}_${COMMAND} "${3}" "${4}" "${5}"
 
 # EOF
