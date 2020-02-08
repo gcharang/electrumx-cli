@@ -39,7 +39,7 @@ fi
 SLEEP=$(which sleep)
 if [ -z "${SLEEP}" ]; then
     echo "\"sleep\" not found or not in \$PATH"
-    echo "try: find . -type 'f' -name '${SLEEP}'"
+    echo "try: find / -type 'f' -name sleep"
     exit
 fi
 
