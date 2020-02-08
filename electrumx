@@ -4,7 +4,7 @@
 ## electrumx bash client
 ##
 
-ELECTRUMX_DEFAULT_HOSTS=("el0.veruscoin.io" "el1.veruscoin.io" "el2.veruscoin.io" "el3.veruscoin.io")
+ELECTRUMX_DEFAULT_HOSTS=("el0.veruscoin.io" "el1.veruscoin.io" "el2.veruscoin.io")
 
 ELECTRUMX_CLIENT_NAME="0x03/electrumx-cli"
 ELECTRUMX_PROTOCOL_VERSION="1.4"
