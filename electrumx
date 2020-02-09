@@ -90,12 +90,42 @@ COMMAND="${2}"
 #
 # calculate scripthash from address
 #
+
 _scripthash(){
+    local scriptpubkey;
+    case "${1::1}" in
+        "b")
+            scriptpubkey=$(_scriptpubkey_p2sh    "${1}")
+            ;;
+        "i")
+            scriptpubkey=$(_scriptpubkey_verusid "${1}")
+            ;;
+        *)
+            scriptpubkey=$(_scriptpubkey_p2pkh   "${1}")
+            ;;
+    esac
+    echo ${scriptpubkey} | xxd -r -p | sha256sum -b |  awk '{print $1}' | tac -rs .. | xargs echo
+}
+
+
+# https://github.com/bitcoinjs/bitcoinjs-lib/blob/master/src/payments/p2pkh.js#L55
+_scriptpubkey_p2pkh(){
     local decode=$(decodeBase58 ${1})
-    local P2PKH="76A914"
-    P2PKH="${P2PKH}${decode:2:-8}"
-    P2PKH="${P2PKH}88AC"
-    echo ${P2PKH} | xxd -r -p | sha256sum -b | awk '{print $1}' | tac -rs .. | xargs echo
+    local P2PKH="76A914${decode:2:-8}88AC"
+    echo ${P2PKH};
+}
+
+# https://github.com/bitcoinjs/bitcoinjs-lib/blob/master/src/payments/p2sh.js#L116
+_scriptpubkey_p2sh(){
+    local decode=$(decodeBase58 ${1})
+    local P2SH="A914${decode:2:-8}87"
+    echo ${P2SH};
+}
+
+_scriptpubkey_verusid(){
+    local decode=$(decodeBase58 ${1})
+    local VERUSID="050403000000CC1B04030001011504${decode:2:-8}75"
+    echo ${VERUSID};
 }
 
 #
