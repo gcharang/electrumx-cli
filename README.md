@@ -16,7 +16,7 @@ This is an attempt to come up with a nice [ElectrumX](https://github.com/kyuupic
 Install these packages:
 
 ```
-$ apt install jq nmap bc
+$ sudo apt install jq nmap bc
 ```
 
 **NOTE**: `nmap` is needed because of `ncat`. `bc` is needed because we need to do some precise maths. Additionally, a `sleep` binary must be in your `$PATH`, but that should come with everybodies default install. 
