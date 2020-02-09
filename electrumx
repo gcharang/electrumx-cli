@@ -1,13 +1,12 @@
 #!/bin/bash
-
 ##
-## electrumx bash client
+## electrumx commandline client
 ##
 
 ELECTRUMX_DEFAULT_HOSTS=("el0.veruscoin.io" "el1.veruscoin.io" "el2.veruscoin.io")
 ELECTRUMX_DEFAULT_PORT="17485"
 
-ELECTRUMX_CLIENT_NAME="0x03/electrumx-cli"
+ELECTRUMX_CLIENT_NAME="electrumx-cli"
 ELECTRUMX_PROTOCOL_VERSION="1.4"
 
 # default timeouts
@@ -333,7 +332,7 @@ function srv_peers(){
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#server-ping
 function srv_ping(){
-    REPLY=$(_request "${REQUEST_TIMEOUT}" "server.ping" | ${JQ} ${JQ_OPTS} .result)
+    REPLY=$(_request "${REQUEST_TIMEOUT}" "server.ping" "\"${ELECTRUMX_CLIENT_NAME}\"" "\"${ELECTRUMX_PROTOCOL_VERSION}\"" | ${JQ} ${JQ_OPTS} .result)
     if [ "${REPLY}" == "null" ]; then
         echo pong!
     fi
@@ -343,7 +342,7 @@ function srv_ping(){
 function srv_version(){
     _request "${REQUEST_TIMEOUT}" "server.version" "\"${ELECTRUMX_CLIENT_NAME}\"" "\"${ELECTRUMX_PROTOCOL_VERSION}\"" | ${JQ} ${JQ_OPTS} .result[0]
 }
-function srv_protocol(){
+function srv_protocol_version(){
     _request "${REQUEST_TIMEOUT}" "server.version" "\"${ELECTRUMX_CLIENT_NAME}\"" "\"${ELECTRUMX_PROTOCOL_VERSION}\"" | ${JQ} ${JQ_OPTS} .result[1]
 }
 
