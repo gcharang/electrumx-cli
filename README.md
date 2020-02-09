@@ -151,7 +151,7 @@ $ ./electrumx chain height
 
 | Position | Parameter     | Description                                    |
 |---------:|---------------|------------------------------------------------|
-| 1        | `address`     | `P2PKH` address to get balance for   |
+| 1        | `address`     | Address to get balance for   |
 
 #### Example
 
@@ -164,12 +164,12 @@ $ ./electrumx addr balance RBBxnQZyPhAwcejNK25wdQEpp6JgTkfbww
 
 | Position | Parameter     | Description                                    |
 |---------:|---------------|------------------------------------------------|
-| 1        | `address`     | `P2PKH` address to get balance for   |
+| 1        | `address`     | Address to get balance for   |
 
 #### Example
 
 ```bash
-$ ./electrumx addr history bCm5tsaA5PagFf6kGTL9KowaGds2qcH28i
+$ ./electrumx addr history RBBxnQZyPhAwcejNK25wdQEpp6JgTkfbww
 [
   {
     "tx_hash": "ff1ec4aff6c58cb2e9ad6a212057b8c81ef20bfecf7b42fd71a7419e4bfcc3d0",
@@ -190,12 +190,12 @@ $ ./electrumx addr history bCm5tsaA5PagFf6kGTL9KowaGds2qcH28i
 
 | Position | Parameter     | Description                                    |
 |---------:|---------------|------------------------------------------------|
-| 1        | `address`     | `P2PKH` or address to get balance for   |
+| 1        | `address`     | Address to get balance for   |
 
 #### Example
 
 ```bash
-./electrumx addr mempool bCm5tsaA5PagFf6kGTL9KowaGds2qcH28i
+./electrumx addr mempool RBBxnQZyPhAwcejNK25wdQEpp6JgTkfbww
 [
   {
     "tx_hash": "279387fee138b648a7a80687cbbe17b27a035a704b7985231c4a0fd22315ad92",
@@ -209,12 +209,12 @@ $ ./electrumx addr history bCm5tsaA5PagFf6kGTL9KowaGds2qcH28i
 
 | Position | Parameter     | Description                                    |
 |---------:|---------------|------------------------------------------------|
-| 1        | `address`     | `P2PKH` or address to get balance for   |
+| 1        | `address`     | Address to get balance for   |
 
 #### Example
 
 ```bash
-$ ./electrumx addr unspent bCm5tsaA5PagFf6kGTL9KowaGds2qcH28i
+$ ./electrumx addr unspent RRBBxnQZyPhAwcejNK25wdQEpp6JgTkfbww
 [
   {
     "tx_hash": "279387fee138b648a7a80687cbbe17b27a035a704b7985231c4a0fd22315ad92",
@@ -229,12 +229,12 @@ $ ./electrumx addr unspent bCm5tsaA5PagFf6kGTL9KowaGds2qcH28i
 
 | Position | Parameter     | Description                                    |
 |---------:|---------------|------------------------------------------------|
-| 1        | `address`     | `P2PKH` or address to get balance for   |
+| 1        | `address`     | Address to get balance for   |
 
 #### Example
 
 ```bash
-$ ./electrumx addr subscribe bCm5tsaA5PagFf6kGTL9KowaGds2qcH28i
+$ ./electrumx addr subscribe RRBBxnQZyPhAwcejNK25wdQEpp6JgTkfbww
 82444c5f8b2b55ef6e02e95f1a2bd259a0e32a5281402fbf2a952f3ea9c292e2
 ```
 
