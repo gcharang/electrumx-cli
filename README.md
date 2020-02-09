@@ -16,10 +16,10 @@ This is an attempt to come up with a nice [ElectrumX](https://github.com/kyuupic
 Install these packages:
 
 ```
-$ sudo apt install jq nmap bc dc findutils coreutils
+$ sudo apt install jq nmap bc dc xxd coreutils findutils
 ```
 
-**NOTE**: `nmap` is needed because of `ncat`. `bc` and `dc` are needed because we need to do some precise maths. Additionally, you'll need `coreutils` and `findutils`, which should be available on most default setups.
+**NOTE**: `nmap` is needed because of `ncat`. Most of the output is in `JSON`, thus `jq` is used in a lot of places. `bc` and `dc` are needed because we need to do some precise maths. `xxd` will help us with converting hex and binary back and forth to get proper checksums for data. Additionally, you'll need `coreutils` and `findutils`, which should be available on most default setups.
 
 ## Installation
 
