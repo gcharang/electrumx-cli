@@ -35,7 +35,6 @@ encodeBase58() {
 }
 
 
-#decode=$(decodeBase58 "RGc2Z3vsX327p5ZUoqgsyY3NFmfKrjoKuD")
 decode=$(decodeBase58 "${1}")
 
 P2PKH="76A914"
