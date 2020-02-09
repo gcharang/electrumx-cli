@@ -14,6 +14,14 @@ ELECTRUMX_PROTOCOL_VERSION="1.4"
 SUBSCRIBE_TIMEOUT=600
 REQUEST_TIMEOUT=0.5
 
+if [ -f "./bitcoin-bash-tools/bitcoin.sh" ]; then
+    . ./bitcoin-bash-tools/bitcoin.sh
+else
+    echo "\"bitcoin-bash-tools\" not found"
+    echo "try: git submodule init && git submodule update"
+    exit
+fi
+
 # if there's a ${T} variable set, use that as timeout.
 test ! -z "${T}" && SUBSCRIBE_TIMEOUT="${T}"
 test ! -z "${T}" && REQUEST_TIMEOUT="${T}"
@@ -78,6 +86,17 @@ esac
 MODULE="${1}"
 # position of command specification in parameter list
 COMMAND="${2}"
+
+#
+# calculate scripthash from address
+#
+_scripthash(){
+    local decode=$(decodeBase58 ${1})
+    local P2PKH="76A914"
+    P2PKH="${P2PKH}${decode:2:-8}"
+    P2PKH="${P2PKH}88AC"
+    echo ${P2PKH} | xxd -r -p | sha256sum -b | awk '{print $1}' | tac -rs .. | xargs echo
+}
 
 #
 # request data from electrumx
@@ -163,7 +182,7 @@ function chain_height(){
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#blockchain-scripthash-get-balance
 # ${1}: address
 function addr_balance(){
-	SCRIPTHASH=$(./scripthash ${1})
+	SCRIPTHASH=$(_scripthash ${1})
     RESULT=$(_request "${REQUEST_TIMEOUT}" "blockchain.scripthash.get_balance" "\"${SCRIPTHASH}\"" | ${JQ} ${JQ_OPTS} .result.confirmed)
     echo "scale=8; ${RESULT}/100000000" | ${BC}
 }
@@ -171,21 +190,21 @@ function addr_balance(){
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#blockchain-scripthash-get-history
 # ${1}: address
 function addr_history(){
-	SCRIPTHASH=$(./scripthash ${1})
+	SCRIPTHASH=$(_scripthash ${1})
     _request "${REQUEST_TIMEOUT}" "blockchain.scripthash.get_history" "\"${SCRIPTHASH}\"" | ${JQ} ${JQ_OPTS} .result
 }
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#blockchain-scripthash-get-mempool
 # ${1}: address
 function addr_mempool(){
-	SCRIPTHASH=$(./scripthash ${1})
+	SCRIPTHASH=$(_scripthash ${1})
     _request "${REQUEST_TIMEOUT}" "blockchain.scripthash.get_mempool" "\"${SCRIPTHASH}\"" | ${JQ} ${JQ_OPTS} .result
 }
 
 # https://electrumx.readthedocs.io/en/latest/protocol-methods.html#blockchain-scripthash-listunspent
 # ${1}: address
 function addr_unspent(){
-	SCRIPTHASH=$(./scripthash ${1})
+	SCRIPTHASH=$(_scripthash ${1})
     _request "${REQUEST_TIMEOUT}" "blockchain.scripthash.listunspent" "\"${SCRIPTHASH}\"" | ${JQ} ${JQ_OPTS} .result
 }
 
@@ -193,7 +212,7 @@ function addr_unspent(){
 # ${1}: duration
 # ${2}: address
 function addr_subscribe(){
-    SCRIPTHASH=$(./scripthash ${1})
+    SCRIPTHASH=$(_scripthash ${1})
     _request "${SUBSCRIBE_TIMEOUT}" "blockchain.scripthash.subscribe" "\"${SCRIPTHASH}\"" | ${JQ} ${JQ_OPTS} '.result // .params[1]// .error'
 }
 
