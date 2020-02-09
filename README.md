@@ -33,11 +33,6 @@ $ sudo cp electrumx-completion.bash /etc/bash_completion.d/
 
 ## General usage
 
-### `electrumx`
-
-This is the Electrumx CLI tool. 
-
-#### Basic usage
 ```bash
 $ ./electrumx chain height
 ```
