@@ -24,14 +24,25 @@ $ sudo apt install jq nmap bc
 ## Installation
 
 ```
-$ git clone github.com/BloodyNora/electrumx-cli
+$ git clone https://github.com/BloodyNora/electrumx-cli
 $ cd electrumx-cli
 $ git submodule init
 $ git submodule update
 $ sudo cp electrumx-completion.bash /etc/bash_completion.d/
 ```
 
-## General usage
+## General information
+
+### Address types
+
+Currently, `electrumx-cli` supports these address types only: 
+
+  - `P2PKH`
+  - `P2SH`
+  - `verusID`
+
+
+### Basic usage
 
 ```bash
 $ ./electrumx chain height
