@@ -28,37 +28,84 @@ test ! -z "${T}" && REQUEST_TIMEOUT="${T}"
 
 # try to find ncat on the system, exit if not.
 NCAT=$(which ncat)
-if [ -z "${NCAT}" ]; then
-    echo "\"ncat\" not found or not in \$PATH"
+test -z "${NCAT}" && {
+    echo "\"ncat\" not found or not in \$PATH"; ech
     echo "try: sudo apt install nmap"
     exit
-fi
+}
 
 # try to find jq on the system, exit if not.
 JQ=$(which jq)
-if [ -z "${JQ}" ]; then
+test -z "${JQ}" && {
     echo "\"jq\" not found or not in \$PATH"
     echo "try: sudo apt install jq"
     exit
-fi
+}
 JQ_OPTS="-Mr"
 
 # try to find bc on the system, exit if not
 BC=$(which bc)
-if [ -z "${BC}" ]; then
+test -z "${BC}" && {
     echo "\"bc\" not found or not in \$PATH"
     echo "try: sudo apt install bc"
     exit
-fi
+}
 
+# try to find bc on the system, exit if not
+DC=$(which dc)
+test -z "${DC}"  && {
+    echo "\"dc\" not found or not in \$PATH"
+    echo "try: sudo apt install dc"
+    exit
+}
+
+# try to find xxd on the system, exit if not
+XXD=$(which xxd)
+test -z "${XXD}"  && {
+    echo "\"xxd\" not found or not in \$PATH"
+    echo "try: sudo apt install xxd"
+    exit
+}
+
+# try to find awk on the system, exit if not
+AWK=$(which awk)
+test -z "${AWK}" && {
+    echo "\"awk\" not found or not in \$PATH"
+    echo "try: sudo apt install gawk"
+    exit
+}
+
+# try to find sha256sum on the system, exit if not
+SHA256SUM=$(which sha256sum)
+test -z "${SHA256SUM}" && {
+    echo "\"sha256sum\" not found or not in \$PATH"
+    echo "try: sudo apt install coreutils"
+    exit
+}
 
 # try to find sleep on the system, exit if not.
 SLEEP=$(which sleep)
-if [ -z "${SLEEP}" ]; then
+test -z "${SLEEP}"  && {
     echo "\"sleep\" not found or not in \$PATH"
     echo "try: find / -type 'f' -name sleep"
     exit
-fi
+}
+
+# try to find xargs on the system, exit if not
+XARGS=$(which xargs)
+test -z "${XARGS}"  && {
+    echo "\"xargs\" not found or not in \$PATH"
+    echo "try: sudo apt install findutils"
+    exit
+}
+
+# try to find tac on the system, exit if not
+TAC=$(which tac)
+test -z "${TAC}"  && {
+    echo "\"tac\" not found or not in \$PATH"
+    echo "try: sudo apt install coreutils"
+    exit
+}
 
 
 # if theres a host set via environment variable H
@@ -104,7 +151,7 @@ _scripthash(){
             scriptpubkey=$(_scriptpubkey_p2pkh   "${1}")
             ;;
     esac
-    echo ${scriptpubkey} | xxd -r -p | sha256sum -b |  awk '{print $1}' | tac -rs .. | xargs echo
+    echo ${scriptpubkey} | ${XXD} -r -p | ${SHA256SUM} -b |  ${AWK} '{print $1}' | ${TAC} -rs .. | ${XARGS} echo
 }
 
 
