@@ -437,3 +437,16 @@ pong!
 $ ./electrumx srv version
 ElectrumX 1.14.0
 ```
+
+### `protocol version`
+
+*This method has no parameters*
+
+This isn't backed by a protocol method.
+
+#### Example
+
+```bash
+$ ./electrumx srv protocol_version
+1.4
+```
