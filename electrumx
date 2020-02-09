@@ -67,30 +67,6 @@ test -z "${XXD}"  && {
     exit
 }
 
-# try to find awk on the system, exit if not
-AWK=$(which awk)
-test -z "${AWK}" && {
-    echo "\"awk\" not found or not in \$PATH"
-    echo "try: sudo apt install gawk"
-    exit
-}
-
-# try to find sha256sum on the system, exit if not
-SHA256SUM=$(which sha256sum)
-test -z "${SHA256SUM}" && {
-    echo "\"sha256sum\" not found or not in \$PATH"
-    echo "try: sudo apt install coreutils"
-    exit
-}
-
-# try to find sleep on the system, exit if not.
-SLEEP=$(which sleep)
-test -z "${SLEEP}"  && {
-    echo "\"sleep\" not found or not in \$PATH"
-    echo "try: find / -type 'f' -name sleep"
-    exit
-}
-
 # try to find xargs on the system, exit if not
 XARGS=$(which xargs)
 test -z "${XARGS}"  && {
@@ -99,14 +75,16 @@ test -z "${XARGS}"  && {
     exit
 }
 
-# try to find tac on the system, exit if not
+# try to find cut, sha256sum, sleep and tac (all from coreutils, thus checking only one) on the system, exit if not
+CUT=$(which cut)
+SHA256SUM=$(which sha256sum)
+SLEEP=$(which sleep)
 TAC=$(which tac)
 test -z "${TAC}"  && {
     echo "\"tac\" not found or not in \$PATH"
     echo "try: sudo apt install coreutils"
     exit
 }
-
 
 # if theres a host set via environment variable H
 if [ ! -z "${H}" ]; then
@@ -151,7 +129,7 @@ _scripthash(){
             scriptpubkey=$(_scriptpubkey_p2pkh   "${1}")
             ;;
     esac
-    echo ${scriptpubkey} | ${XXD} -r -p | ${SHA256SUM} -b |  ${AWK} '{print $1}' | ${TAC} -rs .. | ${XARGS} echo
+    echo ${scriptpubkey} | ${XXD} -r -p | ${SHA256SUM} -b |  ${CUT} -f1 | ${CUT} -d" " -f1 | ${TAC} -rs .. | ${XARGS} echo
 }
 
 
