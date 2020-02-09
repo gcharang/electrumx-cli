@@ -12,7 +12,7 @@ ELECTRUMX_PROTOCOL_VERSION="1.4"
 
 # default timeouts
 SUBSCRIBE_TIMEOUT=600
-REQUEST_TIMEOUT=0.5
+REQUEST_TIMEOUT=1
 
 if [ -f "./bitcoin-bash-tools/bitcoin.sh" ]; then
     . ./bitcoin-bash-tools/bitcoin.sh
