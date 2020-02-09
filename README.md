@@ -16,10 +16,10 @@ This is an attempt to come up with a nice [ElectrumX](https://github.com/kyuupic
 Install these packages:
 
 ```
-$ sudo apt install jq nmap bc
+$ sudo apt install jq nmap bc dc findutils coreutils
 ```
 
-**NOTE**: `nmap` is needed because of `ncat`. `bc` is needed because we need to do some precise maths. Additionally, a `sleep` binary must be in your `$PATH`, but that should come with everybodies default install. 
+**NOTE**: `nmap` is needed because of `ncat`. `bc` and `dc` are needed because we need to do some precise maths. Additionally, you'll need `coreutils` and `findutils`, which should be available on most default setups.
 
 ## Installation
 
@@ -29,6 +29,7 @@ $ cd electrumx-cli
 $ git submodule init
 $ git submodule update
 $ sudo cp electrumx-completion.bash /etc/bash_completion.d/
+. /etc/profile
 ```
 
 ## General information
@@ -40,7 +41,6 @@ Currently, `electrumx-cli` supports these address types only:
   - `P2PKH`
   - `P2SH`
   - `verusID`
-
 
 ### Basic usage
 
@@ -60,7 +60,7 @@ You can have `electrumx` echo the server it uses to `STDERR` if you set `${D}` t
 $ D=1 ./electrumx srv ping
 ```
 
-Per default, all but the `subscribe` commands (-> all simple requests) will wait for 0.5s before returning. The `subscribe` commands will timeout after 600s. To change either one at runtime, set `T` to a higher value like this: 
+Per default, all but the `subscribe` commands (-> all simple requests) will wait for 0.5s before returning. The `subscribe` commands will timeout after 600s. If your network connection is bad or the server you're talking to is slow, the timeout for simple requests may be too short, resulting in an empty answer or an error. To change either one at runtime, set `T` to a higher value like this: 
 
 ```bash
 $ T=1.5 ./electrumx srv features
