@@ -40,7 +40,7 @@ Currently, `electrumx-cli` supports these address types only:
 
   - `P2PKH`
   - `P2SH`
-  - `verusID`
+  - `VerusID`
 
 ### Basic usage
 
