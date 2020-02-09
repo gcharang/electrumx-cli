@@ -58,7 +58,7 @@ $ T=1.5 ./electrumx srv features
 *or*
 
 ```bash
-$ S=3600 ./electrumx chain subscribe
+$ T=3600 ./electrumx chain subscribe
 ```
 
 ## ElectrumX Protocol Methods
