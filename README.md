@@ -60,11 +60,13 @@ You can have `electrumx` echo the server it uses to `STDERR` if you set `${D}` t
 $ D=1 ./electrumx srv ping
 ```
 
-Per default, all but the `subscribe` commands (-> all simple requests) will wait for 0.5s before returning. The `subscribe` commands will timeout after 600s. If your network connection is bad or the server you're talking to is slow, the timeout for simple requests may be too short, resulting in an empty answer or an error. To change either one at runtime, set `T` to a higher value like this: 
+Per default, all but the `subscribe` commands (-> all simple requests) will wait for 1s before returning. The `subscribe` commands will timeout after 600s. If your network connection is bad or the server you're talking to is slow, the timeout for simple requests may be too short, resulting in an empty answer or an error. To change either one at runtime, set `T` to a higher value like this: 
 
 ```bash
-$ T=1.5 ./electrumx srv features
+$ T=0.5 ./electrumx srv features
 ```
+
+**NOTE**: Wether or not you can use fractions depends on the version of your `coreutils` package.
 
 *or*
 
