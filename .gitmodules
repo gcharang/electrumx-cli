@@ -1,3 +1,3 @@
 [submodule "bitcoin-bash-tools"]
 	path = bitcoin-bash-tools
-	url = git@github.com:/grondilu/bitcoin-bash-tools
+	url = https://github.com:/grondilu/bitcoin-bash-tools
