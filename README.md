@@ -151,7 +151,7 @@ $ ./electrumx chain height
 
 | Position | Parameter     | Description                                    |
 |---------:|---------------|------------------------------------------------|
-| 1        | `address`     | `P2PKH` or `P2SH` address to get balance for   |
+| 1        | `address`     | `P2PKH` address to get balance for   |
 
 #### Example
 
@@ -164,7 +164,7 @@ $ ./electrumx addr balance RBBxnQZyPhAwcejNK25wdQEpp6JgTkfbww
 
 | Position | Parameter     | Description                                    |
 |---------:|---------------|------------------------------------------------|
-| 1        | `address`     | `P2PKH` or `P2SH` address to get balance for   |
+| 1        | `address`     | `P2PKH` address to get balance for   |
 
 #### Example
 
@@ -190,7 +190,7 @@ $ ./electrumx addr history bCm5tsaA5PagFf6kGTL9KowaGds2qcH28i
 
 | Position | Parameter     | Description                                    |
 |---------:|---------------|------------------------------------------------|
-| 1        | `address`     | `P2PKH` or `P2SH` address to get balance for   |
+| 1        | `address`     | `P2PKH` or address to get balance for   |
 
 #### Example
 
@@ -209,7 +209,7 @@ $ ./electrumx addr history bCm5tsaA5PagFf6kGTL9KowaGds2qcH28i
 
 | Position | Parameter     | Description                                    |
 |---------:|---------------|------------------------------------------------|
-| 1        | `address`     | `P2PKH` or `P2SH` address to get balance for   |
+| 1        | `address`     | `P2PKH` or address to get balance for   |
 
 #### Example
 
@@ -229,7 +229,7 @@ $ ./electrumx addr unspent bCm5tsaA5PagFf6kGTL9KowaGds2qcH28i
 
 | Position | Parameter     | Description                                    |
 |---------:|---------------|------------------------------------------------|
-| 1        | `address`     | `P2PKH` or `P2SH` address to get balance for   |
+| 1        | `address`     | `P2PKH` or address to get balance for   |
 
 #### Example
 
