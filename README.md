@@ -66,7 +66,7 @@ To connect to a different host that doesn't support SSL, do this:
 $ SSL=0 H=electrum1.cipig.net P=10001 ./electrumx chain subscribe
 ```
 
-You can have `electrumx` echo the server it uses to `STDERR` if you set `${D}` to a non-empty value (currently any value will work): 
+You can have `electrumx` echo the server it uses to `STDERR` if you set `${D}` to a non-empty value (this is useful when you use the default list of servers and want to know which one is used): 
 
 ```bash
 $ D=1 ./electrumx srv ping
