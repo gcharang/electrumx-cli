@@ -359,7 +359,15 @@ function srv_protocol_version(){
 }
 
 # output debug info if requested. execute.
-test ! -z "${D}" && >&2 echo "DEBUG: using tcp://${ELECTRUMX_HOST}:${ELECTRUMX_PORT}"
+# output debug info if requested. execute.
+test ! -z "${D}" && (
+    if [ ${SSL} -eq 1 ]; then
+        SCHEME="ssl"
+    else
+        SCHEME="tcp"
+    fi
+    >&2 echo "DEBUG: using ${SCHEME}://${ELECTRUMX_HOST}:${ELECTRUMX_PORT}"
+)
 ${MODULE}_${COMMAND} "${3}" "${4}" "${5}"
 
 # EOF
