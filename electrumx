@@ -9,13 +9,21 @@ ELECTRUMX_DEFAULT_PORT="17486"
 ELECTRUMX_CLIENT_NAME="electrumx-cli"
 ELECTRUMX_PROTOCOL_VERSION="1.4"
 
+# ssl defaults
+USE_SSL=1
+SSL_VERIFY=1
+
 # default timeouts
 SUBSCRIBE_TIMEOUT=600
 REQUEST_TIMEOUT=1
 
-# ssl defaults
-SSL=1
-SSL_VERIFY=1
+# if there's a ${T} variable set, use that as timeout.
+test ! -z "${T}" && SUBSCRIBE_TIMEOUT="${T}"
+test ! -z "${T}" && REQUEST_TIMEOUT="${T}"
+
+# if SSL and/or SSL_VERIFY is specified, use passed valued
+test ! -z "${S}" && USE_SSL=${S}
+test ! -z "${V}" && SSL_VERIFY=${V}
 
 if [ -f "./bitcoin-bash-tools/bitcoin.sh" ]; then
     . ./bitcoin-bash-tools/bitcoin.sh
@@ -24,10 +32,6 @@ else
     echo "try: git submodule init && git submodule update"
     exit
 fi
-
-# if there's a ${T} variable set, use that as timeout.
-test ! -z "${T}" && SUBSCRIBE_TIMEOUT="${T}"
-test ! -z "${T}" && REQUEST_TIMEOUT="${T}"
 
 # try to find ncat on the system, exit if not.
 NCAT=$(which ncat)
@@ -191,11 +195,11 @@ function _request(){
     test ! -z "${D}" && >&2 echo "DEBUG: ${TIMEOUT} ${METHOD} ${PARAMS:1}"
 
     # check if ssl is asked
-    if [ ${SSL} -eq 1 ]; then
+    if [ ${USE_SSL} -eq 1 ]; then
         NCAT_SSL="--ssl"
-    fi
-    if [ ${SSL_VERIFY} -eq 1 ]; then
-        NCAT_SSL="${NCAT_SSL} --ssl-verify"
+        if [ ${SSL_VERIFY} -eq 1 ]; then
+            NCAT_SSL="${NCAT_SSL} --ssl-verify"
+        fi
     fi
 
     # request whatever has been prepared, with or without params.
@@ -361,7 +365,7 @@ function srv_protocol_version(){
 # output debug info if requested. execute.
 # output debug info if requested. execute.
 test ! -z "${D}" && (
-    if [ ${SSL} -eq 1 ]; then
+    if [ ${USE_SSL} -eq 1 ]; then
         SCHEME="ssl"
     else
         SCHEME="tcp"

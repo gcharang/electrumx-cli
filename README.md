@@ -57,13 +57,13 @@ $ H=electrum1.cipig.net P=20001 ./electrumx chain subscribe
 Some hosts have broken or self-signed SSL certificates. To disable certificate validation, do this:
 
 ```bash
-$ SSL_VERIFY=0 H=electrum1.cipig.net P=20001 ./electrumx chain subscribe
+$ V=0 H=electrum1.cipig.net P=20001 ./electrumx chain subscribe
 ```
 
 To connect to a different host that doesn't support SSL, do this: 
 
 ```bash
-$ SSL=0 H=electrum1.cipig.net P=10001 ./electrumx chain subscribe
+$ S=0 H=electrum1.cipig.net P=10001 ./electrumx chain subscribe
 ```
 
 You can have `electrumx` echo the server it uses to `STDERR` if you set `${D}` to a non-empty value (this is useful when you use the default list of servers and want to know which one is used): 
