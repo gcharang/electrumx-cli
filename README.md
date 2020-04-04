@@ -48,10 +48,22 @@ Currently, `electrumx-cli` supports these address types only:
 $ ./electrumx chain height
 ```
 
-Per default, `electrumx` will try and talk to `tcp://el0.veruscoin.io:17485` (SSL/TLS isn't supported yet). To connect to a different host and/or port, do this: 
+Per default, `electrumx` will try and talk to `ssl://electrum.vrsc.0x03.services:17486` - SSL connections are default. To connect to a different host and/or port, do this: 
 
 ```bash
-$ H=electrum1.cipig.net P=10001 ./electrumx chain subscribe
+$ H=electrum1.cipig.net P=20001 ./electrumx chain subscribe
+```
+
+Some hosts have broken or self-signed SSL certificates. To disable certificate validation, do this:
+
+```bash
+$ SSL_VERIFY=0 H=electrum1.cipig.net P=20001 ./electrumx chain subscribe
+```
+
+To connect to a different host that doesn't support SSL, do this: 
+
+```bash
+$ SSL=0 H=electrum1.cipig.net P=10001 ./electrumx chain subscribe
 ```
 
 You can have `electrumx` echo the server it uses to `STDERR` if you set `${D}` to a non-empty value (currently any value will work): 
