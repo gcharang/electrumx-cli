@@ -363,7 +363,6 @@ function srv_protocol_version(){
 }
 
 # output debug info if requested. execute.
-# output debug info if requested. execute.
 test ! -z "${D}" && (
     if [ ${USE_SSL} -eq 1 ]; then
         SCHEME="ssl"
