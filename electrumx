@@ -3,8 +3,8 @@
 ## electrumx commandline client
 ##
 
-ELECTRUMX_DEFAULT_HOSTS=("el0.veruscoin.io" "el1.veruscoin.io" "el2.veruscoin.io")
-ELECTRUMX_DEFAULT_PORT="17485"
+ELECTRUMX_DEFAULT_HOSTS=("electrum.vrsc.0x03.services")
+ELECTRUMX_DEFAULT_PORT="17486"
 
 ELECTRUMX_CLIENT_NAME="electrumx-cli"
 ELECTRUMX_PROTOCOL_VERSION="1.4"
@@ -12,6 +12,10 @@ ELECTRUMX_PROTOCOL_VERSION="1.4"
 # default timeouts
 SUBSCRIBE_TIMEOUT=600
 REQUEST_TIMEOUT=1
+
+# ssl defaults
+SSL=1
+SSL_VERIFY=1
 
 if [ -f "./bitcoin-bash-tools/bitcoin.sh" ]; then
     . ./bitcoin-bash-tools/bitcoin.sh
@@ -186,8 +190,16 @@ function _request(){
     # output debug info to STDERR if ${D} is set
     test ! -z "${D}" && >&2 echo "DEBUG: ${TIMEOUT} ${METHOD} ${PARAMS:1}"
 
+    # check if ssl is asked
+    if [ ${SSL} -eq 1 ]; then
+        NCAT_SSL="--ssl"
+    fi
+    if [ ${SSL_VERIFY} -eq 1 ]; then
+        NCAT_SSL="${NCAT_SSL} --ssl-verify"
+    fi
+
     # request whatever has been prepared, with or without params.
-    (echo "{\"id\": 1, \"method\": \"${METHOD}\"${PARAMS}}"; ${SLEEP} ${TIMEOUT}) | ${NCAT} ${ELECTRUMX_HOST} ${ELECTRUMX_PORT}
+    (echo "{\"id\": 1, \"method\": \"${METHOD}\"${PARAMS}}"; ${SLEEP} ${TIMEOUT}) | ${NCAT} ${NCAT_SSL} ${ELECTRUMX_HOST} ${ELECTRUMX_PORT}
 }
 
 #
